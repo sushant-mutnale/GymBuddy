@@ -12,7 +12,7 @@ An intelligent gym partner matching application that uses **collaborative filter
 
 ## 🏗️ Project Structure
 
-```
+
 GYMBUDDY/
 ├── backend/                 # Python FastAPI Backend
 │   ├── app/
@@ -41,7 +41,6 @@ GYMBUDDY/
 ├── docs/                   # Documentation
 ├── .gitignore             # Git ignore rules
 └── README.md              # This file
-```
 
 ## 🚀 Getting Started
 
