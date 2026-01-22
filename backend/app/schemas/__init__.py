@@ -16,6 +16,11 @@ from app.schemas.user import (
 from app.schemas.profile import (
     FitnessProfileUpdate,
     FitnessProfileResponse,
+    FitnessLevel,
+    PreferredSchedule,
+    WorkoutType,
+    WorkoutDay,
+    FitnessGoal,
 )
 
 __all__ = [
@@ -28,4 +33,9 @@ __all__ = [
     "UserPublicResponse",
     "FitnessProfileUpdate",
     "FitnessProfileResponse",
+    "FitnessLevel",
+    "PreferredSchedule",
+    "WorkoutType",
+    "WorkoutDay",
+    "FitnessGoal",
 ]
