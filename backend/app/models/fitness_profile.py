@@ -3,7 +3,7 @@ FitnessProfile Model
 User fitness preferences and goals
 """
 
-from sqlalchemy import Column, String, Text, ForeignKey, Enum
+from sqlalchemy import Column, String, Text, ForeignKey, Enum, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.sqlite import JSON
 import enum
@@ -73,6 +73,10 @@ class FitnessProfile(BaseModel):
         nullable=True,
     )
     
+    # Personal details
+    gender = Column(String(20), nullable=True)  # male, female, other
+    age = Column(Integer, nullable=True)
+
     # Bio/description
     bio = Column(Text, nullable=True)
     

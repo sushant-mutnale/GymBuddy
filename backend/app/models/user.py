@@ -35,6 +35,13 @@ class User(BaseModel):
         uselist=False,
         cascade="all, delete-orphan",
     )
+    
+    match_preference = relationship(
+        "MatchPreference",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
+    )
 
     def __repr__(self):
         return f"<User {self.email}>"

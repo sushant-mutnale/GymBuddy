@@ -40,3 +40,13 @@ def setup_database():
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
+
+
+@pytest.fixture
+def db_session():
+    """Fixture to provide a database session for tests."""
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
