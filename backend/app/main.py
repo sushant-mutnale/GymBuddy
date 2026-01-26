@@ -5,7 +5,7 @@ GymBuddy API - Main Application Entry Point
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import auth_router, users_router, profiles_router
+from app.routers import auth_router, users_router, profiles_router, matches_router, workouts_router
 
 app = FastAPI(
     title="GymBuddy API",
@@ -26,6 +26,8 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(profiles_router)
+app.include_router(matches_router)
+app.include_router(workouts_router)
 
 
 @app.get("/")

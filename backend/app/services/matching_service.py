@@ -186,7 +186,6 @@ class MatchingService:
         potential_users = db.query(User).filter(
             User.id != user_id,
             User.is_active == True,
-            User.is_verified == True # Only verified users? Maybe optional
         ).join(FitnessProfile).all()
 
         recommendations = []

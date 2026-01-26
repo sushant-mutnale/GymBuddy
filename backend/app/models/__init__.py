@@ -11,6 +11,11 @@ from app.models.gym import Gym
 from app.models.match import Match, MatchStatus
 from app.models.match_preference import MatchPreference, GenderPreference
 
+from app.models.workout_plan import WorkoutPlan, PlanStatus
+from app.models.workout_session import WorkoutSession
+
+from app.models.user_stats import UserStats
+
 __all__ = [
     "BaseModel",
     "User",
@@ -22,4 +27,8 @@ __all__ = [
     "MatchStatus",
     "MatchPreference",
     "GenderPreference",
+    "WorkoutPlan",
+    "PlanStatus",
+    "WorkoutSession",
+    "UserStats",
 ]
