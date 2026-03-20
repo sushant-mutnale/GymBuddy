@@ -56,10 +56,16 @@ export default function WorkoutsDashboard() {
                                     Track your fitness journey and stay consistent
                                 </p>
                             </div>
-                            <Link href="/workouts/log" className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-xl font-medium transition-all shadow-lg shadow-purple-900/50 flex items-center space-x-2">
-                                <span>+</span>
-                                <span>Log Workout</span>
-                            </Link>
+                            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                                <Link href="/workouts/plan" className="px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white rounded-xl font-medium transition-all flex items-center justify-center space-x-2">
+                                    <span>🧠</span>
+                                    <span>AI Plan</span>
+                                </Link>
+                                <Link href="/workouts/log" className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-xl font-medium transition-all shadow-lg shadow-purple-900/50 flex items-center justify-center space-x-2">
+                                    <span>+</span>
+                                    <span>Log Workout</span>
+                                </Link>
+                            </div>
                         </div>
 
                         {/* Top Stats Cards */}
