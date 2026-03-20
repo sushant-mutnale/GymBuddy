@@ -16,6 +16,8 @@ from app.models.workout_session import WorkoutSession
 
 from app.models.user_stats import UserStats
 
+from app.models.chat import Message
+
 __all__ = [
     "BaseModel",
     "User",
@@ -25,6 +27,7 @@ __all__ = [
     "Gym",
     "Match",
     "MatchStatus",
+    "Message",
     "MatchPreference",
     "GenderPreference",
     "WorkoutPlan",

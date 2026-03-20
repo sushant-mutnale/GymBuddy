@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import not_
 
 from app.models import User, FitnessProfile, Match, MatchPreference, MatchStatus, Gym
+from app.ml.recommender import FitnessRecommender
 
 
 class MatchingService:
@@ -181,19 +182,46 @@ class MatchingService:
         # Get user preferences
         prefs = user.match_preference
         
-        # Query potential matches (exclude self)
-        # In a real app, use geospatial query or more efficient filtering
-        potential_users = db.query(User).filter(
-            User.id != user_id,
+        # Query ALL active users to build ML profile matrix
+        all_users = db.query(User).filter(
             User.is_active == True,
         ).join(FitnessProfile).all()
 
-        recommendations = []
-
-        for candidate in potential_users:
-            if not candidate.fitness_profile:
+        # Build profiles for ML
+        profiles_data = []
+        for u in all_users:
+            if not u.fitness_profile:
                 continue
-
+            
+            p = u.fitness_profile
+            profiles_data.append({
+                "user_id": u.id,
+                "fitness_level": p.fitness_level,
+                "preferred_schedule": p.preferred_schedule,
+                "goals": p.goals or [],
+                "workout_types": p.workout_types or [],
+                "preferred_days": p.preferred_days or [],
+            })
+            
+        # Fit ML Recommender
+        recommender = FitnessRecommender()
+        recommender.fit(profiles_data)
+        
+        # Get ML scores
+        ml_recommendations = recommender.get_recommendations(user_id, top_n=limit * 2)  # Get extra to account for filters
+        
+        # Create map of candidate user_id to user object
+        candidate_map = {u.id: u for u in all_users if u.id != user_id}
+        
+        recommendations = []
+        for rec in ml_recommendations:
+            candidate_id = rec["user_id"]
+            if candidate_id not in candidate_map:
+                continue
+                
+            candidate = candidate_map[candidate_id]
+            ml_score = rec["score"]
+            
             # Filtering based on preferences
             if prefs:
                 # Gender filter
@@ -205,21 +233,21 @@ class MatchingService:
                 if candidate.fitness_profile.age:
                      if not (prefs.min_age <= candidate.fitness_profile.age <= prefs.max_age):
                          continue
-            
-            # TODO: Distance filtering (basic implementation above in location score, but strictly filtering here?)
-            # Leaving strict distance filter for later or SQL level.
 
+            # Calculate heuristic match score for the UI breakdown representation
             score_data = self.calculate_match_score(user, candidate)
             
-            # Threshold for recommendation
-            if score_data["overall_score"] > 20:  # arbitrary threshold
+            # Use ML score as the overall score
+            overall_score = round(ml_score, 1)
+            
+            if overall_score > 20:  # Arbitrary threshold
                 recommendations.append({
                     "user": candidate,
-                    "score": score_data["overall_score"],
+                    "score": overall_score,
                     "breakdown": score_data["breakdown"]
                 })
-
-        # Sort by score descending
-        recommendations.sort(key=lambda x: x["score"], reverse=True)
+                
+        # Limit the results
+        recommendations = recommendations[:limit]
         
-        return recommendations[:limit]
+        return recommendations

@@ -1,9 +1,11 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { Layout } from '@/components';
 
 // Mock matches data
 const mockMatches = [
     {
+        id: 'room-1',
         name: 'Alex Chen',
         matchScore: 95,
         workoutTypes: ['Strength Training', 'HIIT'],
@@ -12,6 +14,7 @@ const mockMatches = [
         unread: 2,
     },
     {
+        id: 'room-2',
         name: 'Sarah Miller',
         matchScore: 88,
         workoutTypes: ['CrossFit', 'Cardio'],
@@ -20,6 +23,7 @@ const mockMatches = [
         unread: 0,
     },
     {
+        id: 'room-3',
         name: 'Marcus Johnson',
         matchScore: 82,
         workoutTypes: ['Powerlifting'],
@@ -108,31 +112,32 @@ export default function Matches() {
                                 Active Partners ({mockMatches.length})
                             </h2>
                             <div className="space-y-3">
-                                {mockMatches.map((match, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 hover:border-gray-600 transition-colors cursor-pointer"
-                                    >
-                                        <div className="flex items-center space-x-4">
-                                            <div className="relative">
-                                                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">
-                                                    💪
-                                                </div>
-                                                {match.unread > 0 && (
-                                                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs text-white font-bold">
-                                                        {match.unread}
+                                {mockMatches.map((match) => (
+                                    <Link href={`/chat/${match.id}`} key={match.id}>
+                                        <div
+                                            className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 hover:border-gray-600 transition-colors cursor-pointer block mt-3"
+                                        >
+                                            <div className="flex items-center space-x-4">
+                                                <div className="relative">
+                                                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">
+                                                        💪
                                                     </div>
-                                                )}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center justify-between mb-1">
-                                                    <h3 className="font-semibold text-white">{match.name}</h3>
-                                                    <span className="text-gray-500 text-xs">{match.lastActive}</span>
+                                                    {match.unread > 0 && (
+                                                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs text-white font-bold">
+                                                            {match.unread}
+                                                        </div>
+                                                    )}
                                                 </div>
-                                                <p className="text-gray-400 text-sm truncate">{match.lastMessage}</p>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center justify-between mb-1">
+                                                        <h3 className="font-semibold text-white">{match.name}</h3>
+                                                        <span className="text-gray-500 text-xs">{match.lastActive}</span>
+                                                    </div>
+                                                    <p className="text-gray-400 text-sm truncate">{match.lastMessage}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

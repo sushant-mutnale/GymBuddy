@@ -24,6 +24,12 @@ export default function Navbar() {
                         <Link href="/matches" className="text-gray-300 hover:text-white transition-colors">
                             Matches
                         </Link>
+                        <Link href="/workouts" className="text-gray-300 hover:text-white transition-colors">
+                            Workouts
+                        </Link>
+                        <Link href="/gyms" className="text-gray-300 hover:text-white transition-colors">
+                            Gyms
+                        </Link>
                         <Link href="/profile" className="text-gray-300 hover:text-white transition-colors">
                             Profile
                         </Link>
@@ -68,6 +74,12 @@ export default function Navbar() {
                         </Link>
                         <Link href="/matches" className="block text-gray-300 hover:text-white">
                             Matches
+                        </Link>
+                        <Link href="/workouts" className="block text-gray-300 hover:text-white">
+                            Workouts
+                        </Link>
+                        <Link href="/gyms" className="block text-gray-300 hover:text-white">
+                            Gyms
                         </Link>
                         <Link href="/profile" className="block text-gray-300 hover:text-white">
                             Profile
