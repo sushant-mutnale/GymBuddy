@@ -1,16 +1,43 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { Layout } from '@/components';
 
 export default function Login() {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Implement login logic
-        console.log('Login:', { email, password });
+        setError('');
+        setIsLoading(true);
+
+        try {
+            const res = await fetch('http://localhost:8000/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.detail || 'Invalid email or password');
+            }
+
+            // Save token
+            localStorage.setItem('token', data.access_token);
+            
+            // Redirect to dashboard or discover
+            router.push('/discover');
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -34,6 +61,8 @@ export default function Login() {
                         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
                             <h1 className="text-2xl font-bold text-white mb-2 text-center">Welcome Back</h1>
                             <p className="text-gray-400 text-center mb-8">Sign in to find your workout partners</p>
+
+                            {error && <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg mb-6 text-sm">{error}</div>}
 
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 <div>
@@ -76,9 +105,10 @@ export default function Login() {
 
                                 <button
                                     type="submit"
-                                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-200"
+                                    disabled={isLoading}
+                                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-200 disabled:opacity-50"
                                 >
-                                    Sign In
+                                    {isLoading ? 'Signing In...' : 'Sign In'}
                                 </button>
                             </form>
 
