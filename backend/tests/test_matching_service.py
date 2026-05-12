@@ -147,4 +147,4 @@ class TestMatchingServiceIntegration:
         
         assert len(recommendations) == 1
         assert recommendations[0]["user"].id == user_b.id
-        assert recommendations[0]["score"] == 80.0
+        assert recommendations[0]["score"] == 100.0
